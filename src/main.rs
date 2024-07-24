@@ -2,7 +2,7 @@ use std::io::Write;
 
 use crossterm::{
     execute, queue,
-    terminal::{disable_raw_mode, enable_raw_mode},
+    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 
 fn main() {
@@ -11,7 +11,7 @@ fn main() {
     let mut stdout = std::io::stdout();
 
     // hide cursor
-    execute!(stdout, crossterm::cursor::Hide).unwrap();
+    execute!(stdout, EnterAlternateScreen, crossterm::cursor::Hide).unwrap();
 
     // add basic game loop with key input and screen clearing with transparent background
     loop {
@@ -32,7 +32,7 @@ fn main() {
         .unwrap();
     }
 
-    execute!(stdout, crossterm::cursor::Show).unwrap();
+    execute!(stdout, crossterm::cursor::Show, LeaveAlternateScreen).unwrap();
 
     disable_raw_mode().unwrap();
 }
